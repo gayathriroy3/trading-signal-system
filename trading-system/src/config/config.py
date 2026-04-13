@@ -70,6 +70,3 @@ TARGETS=["target_15min","target_30min","target_45min","target_60min"]
 MODEL_PATH='models/model_v1.joblib'
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
-
-#testing
-REALTIME_PREDICT_DAY=date(2026, 4, 10)

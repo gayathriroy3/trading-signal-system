@@ -7,10 +7,8 @@ import joblib
 
 from src.features.build_features import get_and_process_data
 from src.features.indicators import *
-from src.config.config import NIFTY,MODEL_PATH,FEATURES
+from src.config.config import NIFTY,MODEL_PATH,FEATURES,REALTIME_PREDICT_DAY
 from src.data.refresh_data import load_predict
-
-# Load the pre-trained model
 try:
     model = joblib.load(MODEL_PATH)
 except FileNotFoundError:
@@ -23,7 +21,6 @@ st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
 
 st.title("📊 Nifty 50 Real-Time Signal Dashboard")
 st.markdown("This dashboard updates automatically every 5 minutes to scan for your trader's setup.")
-st.info(f"Last dashboard refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}") # Added for debugging autorefresh
 
 nifty_predict,start_date_for_yf,selected_date=load_predict()
 
@@ -55,22 +52,6 @@ X_live = current_day_data[FEATURES]
 
 X_live = X_live.fillna(0)
 
-if X_live.empty:
-    st.warning("No data remaining after feature selection and NaN imputation. This might indicate an issue with feature calculation or insufficient historical data provided by Yahoo Finance for the selected date.")
-    st.stop()
-
-# Ensure all feature columns exist in the DataFrame after processing and before selecting for X_live
-# Handle missing feature columns by adding them with default values (e.g., 0) if they don't exist
-for feature in features:
-    if feature not in current_day_data.columns:
-        current_day_data[feature] = 0.0 # Use float 0 for numerical features
-
-X_live = current_day_data[features]
-
-# Fill any remaining NaNs in X_live that might exist due to lookback requirements for early candles
-X_live = X_live.fillna(0) # CRITICAL FIX: Impute NaNs in X_live before prediction
-
-# Check if X_live is empty after feature selection and NaN imputation
 if X_live.empty:
     st.warning("No data remaining after feature selection and NaN imputation. This might indicate an issue with feature calculation or insufficient historical data provided by Yahoo Finance for the selected date.")
     st.stop()
