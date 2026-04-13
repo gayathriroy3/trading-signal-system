@@ -67,7 +67,7 @@ latest_row = current_day_data.iloc[-1]
 # Top Metrics Bar
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Nifty 50 Close", f"{latest_row['close']:.2f}")
-col2.metric("Stochastic K", f"{latest_row['stoch_k']:.1f}%")
+col2.metric("Stochastic K", f"{latest_row['stoch_k']:.1f}")
 col3.metric("EMA 9", f"{latest_row['ema_9']:.2f}")
 col4.metric("Last Update", latest_row.name.strftime("%H:%M"))
 
