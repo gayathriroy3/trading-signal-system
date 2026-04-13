@@ -2,6 +2,7 @@ import streamlit as st
 import plotly.graph_objects as go
 from streamlit_autorefresh import st_autorefresh
 import joblib
+import pytz
 
 from features.build_features import get_and_process_data
 from features.indicators import *
@@ -23,7 +24,7 @@ st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
 
 st.title("📊 Nifty 50 Real-Time Signal Dashboard")
 st.markdown("This dashboard updates automatically every 5 minutes to scan for your trader's setup.")
-st.info(f"Last dashboard refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}") 
+st.info(f"Last dashboard refresh: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}") 
 
 nifty_predict,start_date_for_yf,end_date_for_yf,selected_date=load_predict()
 
