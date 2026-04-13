@@ -82,9 +82,6 @@ fig.add_trace(go.Candlestick(
 # Add EMA 9 Line
 fig.add_trace(go.Scatter(x=current_day_data.index, y=current_day_data['ema_9'], line=dict(color='orange', width=1.5), name="9 EMA"))
 
-# Add Stoch Line
-fig.add_trace(go.Scatter(x=current_day_data.index, y=current_day_data['stoch_k'], line=dict(color='grey', width=1.5), name="Stoch"))
-
 # Add Buy Signals (Green Arrows)
 buys = current_day_data[current_day_data['buy_signal']]
 fig.add_trace(go.Scatter(
@@ -101,6 +98,13 @@ fig.add_trace(go.Scatter(
 
 fig.update_layout(height=600, template='plotly_dark', xaxis_rangeslider_visible=False)
 st.plotly_chart(fig, use_container_width=True)
+
+# Add Stoch K line
+fig_stoch=go.Figure()
+fig_stoch.add_trace(go.Scatter(x=current_day_data.index,y=current_day_data['stoch_k'],line=dict(color='grey',width=1.5),name='Stoch K'))
+fig_stoch.update_layout(height=300,template='plotly-dark',title='Stochastic Osillator')
+st.plotly_chart(fig_stoch,use_container_width=True)
+
 
 # Latest Alerts Section
 st.subheader("🔔 Recent Trade Alerts")
