@@ -46,31 +46,10 @@ if current_day_data.empty:
     st.warning("No Nifty 50 data available for the selected trading day after feature calculation. This might indicate an issue with the data source, market conditions, or the selected date.")
     st.stop() 
 
-
-for feature in FEATURES:
-    if feature not in current_day_data.columns:
-        current_day_data[feature] = 0.0 
-
 X_live = current_day_data[FEATURES]
 
 X_live = X_live.fillna(0)
 
-if X_live.empty:
-    st.warning("No data remaining after feature selection and NaN imputation. This might indicate an issue with feature calculation or insufficient historical data provided by Yahoo Finance for the selected date.")
-    st.stop()
-
-# Ensure all feature columns exist in the DataFrame after processing and before selecting for X_live
-# Handle missing feature columns by adding them with default values (e.g., 0) if they don't exist
-for feature in FEATURES:
-    if feature not in current_day_data.columns:
-        current_day_data[feature] = 0.0 
-
-X_live = current_day_data[FEATURES]
-
-# Fill any remaining NaNs in X_live that might exist due to lookback requirements for early candles
-X_live = X_live.fillna(0) # CRITICAL FIX: Impute NaNs in X_live before prediction
-
-# Check if X_live is empty after feature selection and NaN imputation
 if X_live.empty:
     st.warning("No data remaining after feature selection and NaN imputation. This might indicate an issue with feature calculation or insufficient historical data provided by Yahoo Finance for the selected date.")
     st.stop()
@@ -102,6 +81,9 @@ fig.add_trace(go.Candlestick(
 
 # Add EMA 9 Line
 fig.add_trace(go.Scatter(x=current_day_data.index, y=current_day_data['ema_9'], line=dict(color='orange', width=1.5), name="9 EMA"))
+
+# Add Stoch Line
+fig.add_trace(go.Scatter(x=current_day_data.index, y=current_day_data['stoch_k'], line=dict(color='grey', width=1.5), name="Stoch"))
 
 # Add Buy Signals (Green Arrows)
 buys = current_day_data[current_day_data['buy_signal']]
