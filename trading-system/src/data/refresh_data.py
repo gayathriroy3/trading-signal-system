@@ -1,5 +1,5 @@
 from config.config import NIFTY
-from pandas import pd
+import pandas as pd
 import yfinance as yf
 from datetime import timedelta,date
 

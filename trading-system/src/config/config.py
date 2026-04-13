@@ -1,6 +1,3 @@
-from datetime import date
-
-
 NIFTY = "^NSEI"
 DEFAULT_INTERVAL = "5m"
 
@@ -62,8 +59,6 @@ FEATURES = [
 # -------------------------
 HORIZONS = [3, 6, 9, 12]  # 15m, 30m, 45m, 60m
 BASE_THRESHOLD = 0.003
-TARGETS=["target_15min","target_30min","target_45min","target_60min"]
-
 # -------------------------
 # Model
 # -------------------------
