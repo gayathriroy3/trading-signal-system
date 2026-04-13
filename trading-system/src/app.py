@@ -5,10 +5,10 @@ import plotly.graph_objects as go
 from streamlit_autorefresh import st_autorefresh
 import joblib
 
-from src.features.build_features import get_and_process_data
-from src.features.indicators import *
-from src.config.config import NIFTY,MODEL_PATH,FEATURES
-from src.data.refresh_data import load_predict
+from features.build_features import get_and_process_data
+from features.indicators import *
+from config.config import NIFTY,MODEL_PATH,FEATURES
+from data.refresh_data import load_predict
 import datetime
 
 
