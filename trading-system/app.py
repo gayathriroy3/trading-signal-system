@@ -9,6 +9,8 @@ from src.features.build_features import get_and_process_data
 from src.features.indicators import *
 from src.config.config import NIFTY,MODEL_PATH,FEATURES
 from src.data.refresh_data import load_predict
+import datetime
+
 
 # Load the pre-trained model
 try:
@@ -23,9 +25,9 @@ st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
 
 st.title("📊 Nifty 50 Real-Time Signal Dashboard")
 st.markdown("This dashboard updates automatically every 5 minutes to scan for your trader's setup.")
-st.info(f"Last dashboard refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}") # Added for debugging autorefresh
+st.info(f"Last dashboard refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}") 
 
-nifty_predict,start_date_for_yf,selected_date=load_predict()
+nifty_predict,start_date_for_yf,end_date_for_yf,selected_date=load_predict()
 
 if nifty_predict.empty:
     st.warning(f"No data fetched from Yahoo Finance for the period {start_date_for_yf.strftime('%Y-%m-%d')} to {end_date_for_yf.strftime('%Y-%m-%d')}. Please check the selected date and market availability.")
@@ -61,11 +63,11 @@ if X_live.empty:
 
 # Ensure all feature columns exist in the DataFrame after processing and before selecting for X_live
 # Handle missing feature columns by adding them with default values (e.g., 0) if they don't exist
-for feature in features:
+for feature in FEATURES:
     if feature not in current_day_data.columns:
-        current_day_data[feature] = 0.0 # Use float 0 for numerical features
+        current_day_data[feature] = 0.0 
 
-X_live = current_day_data[features]
+X_live = current_day_data[FEATURES]
 
 # Fill any remaining NaNs in X_live that might exist due to lookback requirements for early candles
 X_live = X_live.fillna(0) # CRITICAL FIX: Impute NaNs in X_live before prediction
