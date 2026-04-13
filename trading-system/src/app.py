@@ -7,7 +7,7 @@ from features.build_features import get_and_process_data
 from features.indicators import *
 from config.config import NIFTY,MODEL_PATH,FEATURES
 from data.refresh_data import load_predict
-import datetime
+from datetime import datetime
 
 
 # Load the pre-trained model
