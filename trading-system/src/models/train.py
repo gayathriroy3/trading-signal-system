@@ -2,7 +2,7 @@ import pandas as pd
 from xgboost import XGBClassifier
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.model_selection import TimeSeriesSplit
-from src.data import split
+from data import split
 
 def train_model(df, features):
     X = df[features].shift(1)

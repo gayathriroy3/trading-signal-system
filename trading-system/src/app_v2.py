@@ -1,14 +1,12 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 import plotly.graph_objects as go
 from streamlit_autorefresh import st_autorefresh
 import joblib
 
-from src.features.build_features import get_and_process_data
-from src.features.indicators import *
-from src.config.config import NIFTY,MODEL_PATH,FEATURES,REALTIME_PREDICT_DAY
-from src.data.refresh_data import load_predict
+from features.build_features import get_and_process_data
+from features.indicators import *
+from config.config import MODEL_PATH,FEATURES
+from data.refresh_data import load_predict
 try:
     model = joblib.load(MODEL_PATH)
 except FileNotFoundError:
@@ -22,7 +20,7 @@ st_autorefresh(interval=5 * 60 * 1000, key="data_refresh")
 st.title("📊 Nifty 50 Real-Time Signal Dashboard")
 st.markdown("This dashboard updates automatically every 5 minutes to scan for your trader's setup.")
 
-nifty_predict,start_date_for_yf,selected_date=load_predict()
+nifty_predict,start_date_for_yf,end_date_for_yf,selected_date=load_predict()
 
 if nifty_predict.empty:
     st.warning(f"No data fetched from Yahoo Finance for the period {start_date_for_yf.strftime('%Y-%m-%d')} to {end_date_for_yf.strftime('%Y-%m-%d')}. Please check the selected date and market availability.")

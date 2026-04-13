@@ -1,4 +1,4 @@
-from src.config.config import NIFTY
+from config.config import NIFTY
 from pandas import pd
 import yfinance as yf
 from datetime import timedelta,date
