@@ -62,6 +62,6 @@ BASE_THRESHOLD = 0.003
 # -------------------------
 # Model
 # -------------------------
-MODEL_PATH='models/model_v1.joblib'
+MODEL_PATH='results/model_v1.joblib'
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
