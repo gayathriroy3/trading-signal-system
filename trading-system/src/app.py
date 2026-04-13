@@ -102,7 +102,7 @@ st.plotly_chart(fig, use_container_width=True)
 # Add Stoch K line
 fig_stoch=go.Figure()
 fig_stoch.add_trace(go.Scatter(x=current_day_data.index,y=current_day_data['stoch_k'],line=dict(color='grey',width=1.5),name='Stoch K'))
-fig_stoch.update_layout(height=300,template='plotly-dark',title='Stochastic Osillator')
+fig_stoch.update_layout(height=300,template='plotly_dark',title='Stochastic Osillator')
 st.plotly_chart(fig_stoch,use_container_width=True)
 
 
