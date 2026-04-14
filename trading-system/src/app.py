@@ -3,20 +3,13 @@ import plotly.graph_objects as go
 from streamlit_autorefresh import st_autorefresh
 import joblib
 import pytz
+import glob
 
 from features.build_features import get_and_process_data
 from features.indicators import *
-from config.config import NIFTY,MODEL_PATH,FEATURES
+from config.config import MODEL_PATH,FEATURES
 from data.refresh_data import load_predict
-from datetime import datetime
-
-
-# Load the pre-trained model
-try:
-    model = joblib.load(MODEL_PATH)
-except FileNotFoundError:
-    st.error(f"Model file {MODEL_PATH} not found. Please train the model using main.py first.")
-    st.stop()
+from datetime import datetime,date
 
 # 1. SETUP: Page configuration & Auto-refresh (every 300,000ms = 5 minutes)
 st.set_page_config(page_title="Nifty 50 Intraday Signal Dashboard", layout="wide")
@@ -26,7 +19,33 @@ st.title("📊 Nifty 50 Real-Time Signal Dashboard")
 st.markdown("This dashboard updates automatically every 5 minutes to scan for your trader's setup.")
 st.info(f"Last dashboard refresh: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}") 
 
-nifty_predict,start_date_for_yf,end_date_for_yf,selected_date=load_predict()
+# Dynamic date selection
+date_option = st.radio(
+    "Select date for analysis:",
+    ('Today', 'Custom Date'),
+    index=0 # Default to 'Today'
+)
+
+if date_option == 'Today':
+    selected_date = date.today()
+else:
+    selected_date = st.date_input("Choose a date:", value=date.today(), max_value=date.today()) # Added max_value to restrict future dates
+
+# Model Selection
+model_files = glob.glob('*.joblib') # Get all .joblib files
+if not model_files:
+    st.error("No .joblib model files found in the directory. Please train and save a model first.")
+    st.stop()
+
+selected_model_file = st.selectbox("Select a model to use:", model_files)
+try:
+    model = joblib.load(MODEL_PATH+selected_model_file)
+except FileNotFoundError:
+    st.error(f"Model file {MODEL_PATH+selected_model_file} not found. Please train the model using main.py first.")
+    st.stop()
+
+
+nifty_predict,start_date_for_yf,end_date_for_yf=load_predict(selected_date)
 
 if nifty_predict.empty:
     st.warning(f"No data fetched from Yahoo Finance for the period {start_date_for_yf.strftime('%Y-%m-%d')} to {end_date_for_yf.strftime('%Y-%m-%d')}. Please check the selected date and market availability.")
