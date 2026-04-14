@@ -7,7 +7,7 @@ import glob
 
 from features.build_features import get_and_process_data
 from features.indicators import *
-from config.config import MODEL_PATH,FEATURES
+from config.config import FEATURES
 from data.refresh_data import load_predict
 from datetime import datetime,date
 
@@ -39,9 +39,9 @@ if not model_files:
 
 selected_model_file = st.selectbox("Select a model to use:", model_files)
 try:
-    model = joblib.load(MODEL_PATH+selected_model_file)
+    model = joblib.load(selected_model_file)
 except FileNotFoundError:
-    st.error(f"Model file {MODEL_PATH+selected_model_file} not found. Please train the model using main.py first.")
+    st.error(f"Model file {selected_model_file} not found. Please train the model using main.py first.")
     st.stop()
 
 
