@@ -32,7 +32,7 @@ else:
     selected_date = st.date_input("Choose a date:", value=date.today(), max_value=date.today()) # Added max_value to restrict future dates
 
 # Model Selection
-model_files = glob.glob('*.joblib') # Get all .joblib files
+model_files = glob.glob('trading-system/src/results/*.joblib') # Get all .joblib files
 if not model_files:
     st.error("No .joblib model files found in the directory. Please train and save a model first.")
     st.stop()
